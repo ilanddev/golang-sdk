@@ -164,7 +164,12 @@ func (c *Client) doRequest(relPath, verb, payload string) (string, error) {
 	bytesJSON := bytes.NewBuffer([]byte(payload))
 	req, err := http.NewRequest(verb, path, bytesJSON)
 	req.Header.Add("Authorization", "Bearer "+c.Token.AccessToken)
-	req.Header.Add("Accept", "application/vnd.ilandcloud.api.v1.0+json")
+	if strings.HasPrefix(relPath, "/ecs") {
+		req.Header.Add("Accept", "application/vnd.ilandcloud.api.v0.9+json")
+		req.Header.Add("Content-Type", "application/vnd.ilandcloud.api.v0.9+json")
+	} else {
+		req.Header.Add("Accept", "application/vnd.ilandcloud.api.v1.0+json")
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
