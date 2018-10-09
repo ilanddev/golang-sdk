@@ -169,6 +169,9 @@ func (c *Client) doRequest(relPath, verb, payload string) (string, error) {
 		req.Header.Add("Content-Type", "application/vnd.ilandcloud.api.v0.9+json")
 	} else {
 		req.Header.Add("Accept", "application/vnd.ilandcloud.api.v1.0+json")
+		if verb == "PUT" || verb == "POST" {
+			req.Header.Add("Content-Type", "application/json")
+		}
 	}
 	resp, err := client.Do(req)
 	if err != nil {
